@@ -8,6 +8,10 @@ nav {
     background-color: #aa3450;
 }
 
+nav .dropdown-menu {
+    left: -45px !important;
+}
+
 body {
     background-color: #fdffff;
 }

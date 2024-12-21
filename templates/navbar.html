@@ -15,10 +15,23 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'about' %}">About</a>
             </li>
             
-
         </ul>
         <div class="d-flex" role="search">
-          <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+          {% if user.is_authenticated %}
+            <div class="nav-item dropdown">
+              <button class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user.username }}
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </div>           
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+          {% endif %}
         </div>
       </div>
     </div>

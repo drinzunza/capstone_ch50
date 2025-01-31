@@ -36,6 +36,7 @@ class SignUpView(CreateView):
 
     # extend the save functionality
     def form_valid(self, form):
+        print("works")
         user = form.save(commit=False)
         passw = form.cleaned_data['password']
         user.set_password(passw) # hash/encrypt the password

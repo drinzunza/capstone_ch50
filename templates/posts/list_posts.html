@@ -14,6 +14,7 @@
     <div class="head">
         <h1>Feed: The Latest posts</h1>
         <a class="btn btn-outline-primary" href="{% url 'create_post' %}">Create new Post</a>
+        <button onclick="showModal()" class="btn btn-outline-primary">Create Post on Modal</button>
     </div>
 
     {% for post in post_list %}
@@ -45,82 +46,39 @@
             {% endif %}
 
 
-            <div class="reactions">
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="post_id" value="{{post.id}}">
-
-                    {% if user.is_authenticated %}
-                    <button type="submit" name="react_type" value="like" class="like">
-                        <span class="count">{{post.likes}}</span>
-                        <i class="fa-solid fa-thumbs-up"></i>
-                    </button>
-
-                    <button type="submit" name="react_type" value="dislike" class="dislike">
-                        <span class="count">{{post.dislikes}}</span>
-                        <i class="fa-solid fa-thumbs-down"></i>
-                    </button>
-
-                    <button type="submit" name="react_type" value="heart" class="love">
-                        <span class="count">{{post.hearts}}</span>
-                        <i class="fa-solid fa-heart"></i>
-                    </button>
-                    {% else %}
-                    <label class="text-secondary">You need to be logged in to react</label>
-                    {% endif %}                   
-                </form>
-
-                <a onclick="showComments('{{post.id}}')" class="comments-link">({{post.comments.count}}) Comments</a>
-            </div>
-
-
-            <div id="comments-{{post.id}}" class="comments hidden">
-                {% for comment in post.comments.all %}
-                    <div class="comment">
-                        <p class="author">{{comment.user.username}}</p>
-                        <p class="text">{{comment.text|capfirst }}</p>
-                        <p class="date"><small>{{comment.created_on}}</small></p>
-                    </div>
-                {% endfor %}
-
-                <form class="form comment-form">
-                    {% csrf_token %}
-                    <input type="hidden" name="post_id" value="{{post.id}}">
-
-                    <p>Comment:</p>
-                    {% if user.is_authenticated %}
-                    <textarea name="text" class="form-control" rows="3"></textarea>
-                    <button class="btn btn-sm btn-outline-primary">
-                        <i class="fa-regular fa-paper-plane"></i>
-                    </button>
-                    {% else %}
-                    <label class="text-secondary">You need to be logged in to comment</label>
-                    {% endif %}   
-                </form>
-            </div>
+            <a class="btn btn-outline-primary" href="{% url 'details_post' post.id %}">View details</a>
         </div>
     {% endfor %}
 
-    <div class="modal" id="bookmarkModal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Create Bookmark</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <div class="modal fade" id="modalCreate" tabindex="-1" >
+            <div class="modal-dialog">
+                <form method="post" action="{% url 'create_post' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">What on your mind?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-4">
+                                <label class="form-label">What do you want to Share?</label>
+                                <textarea name="content" class="form-control" rows="3"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Include an Image?</label>
+                                <input name="image" type="file" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-              <div>
-                <label class="form-label">Bookmark title:</label>
-                <input id="txtBookmarkTitle" type="text" class="form-control">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button onclick="saveBookmark()" type="button" class="btn btn-primary">Save</button>
-            </div>
-          </div>
         </div>
-    </div>
 
 </div>
 {% endblock %}

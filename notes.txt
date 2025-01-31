@@ -24,7 +24,7 @@ python3 manage.py startapp <NAME>
 
 #### Migrations
 every time you touch a model file, run:
-python3 manage.py makemigrations
+python3 manage.py makemigrations 
 python3 manage.py migrate
 
 

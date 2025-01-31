@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="create-posts">
+    <div class="body">
+        <h1>Post details</h1>
+
+        <p>{{post.content}}</p>
+        <label>Created at: {{post.created_on}}</label>
+        <label>Created by: {{post.author.username}}</label>
+
+        <hr />
+        <a class="btn btn-outline-primary" href="{% url 'update_post' post.id %}">Update post</a>
+        <a class="btn btn-outline-danger" href="{% url 'delete_post' post.id %}">Delete post</a>
+    </div>
+</div>
+
+{% endblock %}
